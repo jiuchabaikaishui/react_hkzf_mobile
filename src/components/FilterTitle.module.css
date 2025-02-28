@@ -1,0 +1,27 @@
+.root {
+    width: 100%;
+    height: 44px;
+    background-color: #fff;
+    border-bottom: 1px solid #e4e6f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.dropdown {
+    font-size: 17px;
+    background-color: #fff;
+}
+.dropdown :global(.icon-arrow) {
+  margin-left: 3px;
+  color: #999;
+  font-size: 12px;
+}
+
+.selected {
+  color: #21b97a;
+}
+.selected :global(.icon-arrow) {
+    color: #21b97a;
+  }

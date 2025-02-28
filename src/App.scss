@@ -1,0 +1,19 @@
+.app {
+  height: 100%;
+  padding-bottom: 49px;
+}
+.app-content {
+  height: 100%;
+  overflow: scroll;
+}
+.adm-tab-bar {
+  bottom: 0;
+  width: 100%;
+  position: fixed;
+}
+.active {
+  color: #21b97a;
+}
+.iconfont {
+  font-size: 20px;
+}
