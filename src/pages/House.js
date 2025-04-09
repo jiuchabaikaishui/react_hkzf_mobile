@@ -2,15 +2,18 @@ import SearchHeader from "../components/SearchHeader";
 import useCurrentCity from "../utils/useCurrentCity";
 import styles from "./House.module.css";
 import Filter from "../components/Filter";
-import { useEffect, useRef, useState, Component } from "react";
+import { useEffect, useRef, useState } from "react";
 import useData from "../utils/useData";
-import { List, AutoSizer, WindowScroller, InfiniteLoader } from "react-virtualized";
+// import { List, AutoSizer, InfiniteLoader } from "react-virtualized";
+import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
+import List from 'react-virtualized/dist/commonjs/List';
+import InfiniteLoader from 'react-virtualized/dist/commonjs/InfiniteLoader';
 import HouseItem from "../components/HouseItem";
 import { instance } from "../utils/api";
-import requestCurrentCity from "../utils/requestCurrentCity";
+// import requestCurrentCity from "../utils/requestCurrentCity";
 import { Toast } from "antd-mobile";
-import { baseUrl } from "../utils/constValue";
 import { useNavigate } from "react-router-dom";
+import NoHouse from "../components/NoHouse";
 
 
 export default function House() {
@@ -21,12 +24,12 @@ export default function House() {
     const [ filters, setFilters ] = useState({})
 
     // 获取房屋列表数据
-    const { data: listData } = useData.get('/houses', {
+    const { data: listData } = useData.get('/houses', {params: {
         cityId: currentCity.value,
         ...filters,
         start: 1,
         end: 20
-    })
+    }})
     console.log('listData: ', listData);
 
     const [list, setList] = useState([])
@@ -53,10 +56,11 @@ export default function House() {
     const navigate = useNavigate()
     function renderList() {
         if (count === 0) {
-            return <div className={styles.noData}>
-                <img className={styles.img} src={baseUrl + '/img/not-found.png'} alt="暂无数据"/>
-                <p className={styles.msg}>没有找到房源，请您换个搜索条件吧~</p>
-            </div>
+            return <NoHouse>没有找到房源，请您换个搜索条件吧~</NoHouse>
+            // return <div className={styles.noData}>
+            //     <img className={styles.img} src={baseUrl + '/img/not-found.png'} alt="暂无数据"/>
+            //     <p className={styles.msg}>没有找到房源，请您换个搜索条件吧~</p>
+            // </div>
         }
         return <InfiniteLoader
         isRowLoaded={({index}) => {

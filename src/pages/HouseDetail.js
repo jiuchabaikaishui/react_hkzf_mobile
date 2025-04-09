@@ -1,69 +1,18 @@
 
 import styles from "./HouseDetail.module.css";
 import NavHeader from "../components/NavHeader";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useData from "../utils/useData";
 import { baseUrl } from "../utils/constValue";
-import { Swiper } from "antd-mobile";
+import { Swiper, Modal, Toast } from "antd-mobile";
 import { useEffect, useState } from "react";
 import HouseItem from "../components/HouseItem";
+import { instance } from "../utils/api";
+import { isAuth } from "../utils/auth";
+import HousePackage from "../components/HousePackage";
 
 // 解决脚手架中全局变量访问的问题
 const BMapGL = window.BMapGL
-
-// 所有房屋配置项
-const HOUSE_PACKAGE = [
-    {
-      id: 1,
-      name: '衣柜',
-      icon: 'icon-wardrobe'
-    },
-    {
-      id: 2,
-      name: '洗衣机',
-      icon: 'icon-wash'
-    },
-    {
-      id: 3,
-      name: '空调',
-      icon: 'icon-air'
-    },
-    {
-      id: 4,
-      name: '天然气',
-      icon: 'icon-gas'
-    },
-    {
-      id: 5,
-      name: '冰箱',
-      icon: 'icon-ref'
-    },
-    {
-      id: 6,
-      name: '暖气',
-      icon: 'icon-Heat'
-    },
-    {
-      id: 7,
-      name: '电视',
-      icon: 'icon-vid'
-    },
-    {
-      id: 8,
-      name: '热水器',
-      icon: 'icon-heater'
-    },
-    {
-      id: 9,
-      name: '宽带',
-      icon: 'icon-broadband'
-    },
-    {
-      id: 10,
-      name: '沙发',
-      icon: 'icon-sofa'
-    }
-  ]
 
   // 猜你喜欢
   const recommendHouses = [
@@ -100,6 +49,7 @@ export default function HouseDetail() {
 
     // 请求数据
     const { data } = useData.get('/houses/' + routerParams.id)
+    // const { data } = {data:null}
     console.log('data: ', data);
     
     // 结构数据数据
@@ -159,10 +109,27 @@ export default function HouseDetail() {
         }
 
         return () => ignore = true
-    }, [latitude, longitude])
+    }, [latitude, longitude, community])
 
-    const [selectedNames, setSelectedNames] = useState([])
+    // 收藏
     const [isFavorite, setIsFavorite] = useState(false)
+    useEffect(() => {
+        let ignore = false
+        // 登录才获取收藏数据
+        if (isAuth()) {
+            instance.get('/user/favorites/' + routerParams.id).then((data) => {
+                if (!ignore) {
+                    console.log('favorite data: ', data);
+                    if (data.status === 200) {
+                        setIsFavorite(data.body.isFavorite)
+                    }
+                }
+            })
+        }
+        return () => ignore = true
+    }, [])
+
+    const navigate = useNavigate()
     
     return (<div className={styles.root}>
         {/* 导航栏 */}
@@ -245,26 +212,7 @@ export default function HouseDetail() {
             {/* 房屋配套 */}
             <div className={styles.about}>
                 <div>房屋配套</div>
-                <div className={styles.aboutList}>
-                    {HOUSE_PACKAGE.map((item, i) => {
-                        const si = selectedNames.indexOf(item.name)
-                        return <div className={styles.aboutItem + (si > -1 ? ' ' + styles.aboutActive : '')} key={item.id} onClick={() => {
-                            console.log('si: ', si);
-                            const newNames = [...selectedNames]
-                            if (si > -1) {
-                                newNames.splice(si, 1)
-                            } else {
-                                newNames.push(item.name)
-                            }
-                            setSelectedNames(newNames)
-                        }}>
-                            <p className={styles.aboutValue}>
-                                <i className={`iconfont ${item.icon} ${styles.icon}`} />
-                            </p>
-                            <div>{item.name}</div>
-                        </div>
-                    })}
-                </div>
+                {data && <HousePackage supporting={supporting}></HousePackage>}
             </div>
 
             {/* 房源概况 */}
@@ -293,14 +241,58 @@ export default function HouseDetail() {
                 <div className={styles.houseTitle}>猜你喜欢</div>
                 {
                     recommendHouses.map((item) => {
-                        return <HouseItem item={item}></HouseItem>
+                        return <HouseItem key={item.id} item={item}></HouseItem>
                     })
                 }
             </div>
 
             {/* 底部栏工具栏 */}
             <div className={styles.footer}>
-                <div className={styles.favorite}>
+                <div className={styles.favorite} onClick={async () => {
+                    if (isAuth()) {
+                        // 已登录
+                        if (isFavorite) {
+                            // 已收藏
+                            const deleteData = await instance.delete('/user/favorites/' + routerParams.id)
+                            console.log('delete data: ', deleteData);
+                            if (deleteData.status === 200) {
+                                Toast.show('已取消收藏')
+                                setIsFavorite(false)
+                            } else {
+                                Toast.show('登录超时，请重新登录')
+                            }
+                        } else {
+                            // 未收藏
+                            const postData = await instance.post('/user/favorites/' + routerParams.id)
+                            console.log('post data: ', postData);
+                            if (postData.status === 200) {
+                                Toast.show('已收藏')
+                                setIsFavorite(true)
+                            } else {
+                                Toast.show('登录超时，请重新登录')
+                            }
+                        }
+                    } else {
+                        // 未登录
+                        Modal.show({
+                            title: '提示',
+                            content: '登录后才能收藏房源，是否去登录?',
+                            closeOnAction: true,
+                            actions: [
+                                {
+                                    key: 'cancel',
+                                    text: '取消'
+                                },
+                                {
+                                    key: 'confirm',
+                                    text: '去登录',
+                                    primary: true,
+                                    onClick: async () => navigate('/login', {state: {from: 'location'}})
+                                }
+                            ]
+                        })
+                    }
+                }}>
                     <img
                     src={
                         baseUrl + (isFavorite ? '/img/star.png' : '/img/unstar.png')

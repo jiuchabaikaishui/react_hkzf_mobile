@@ -1,0 +1,89 @@
+.title {
+    min-height: 300px;
+}
+.bg {
+    width: 100%;
+}
+.info {
+    background-color: white;
+    margin: -70px 8% 0;
+    position: relative;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px #ddd;
+}
+.myIcon {
+    margin: 0 auto;
+    width: 70px;
+    height: 70px;
+    transform: translateY(-50%);
+}
+.avater {
+    width: 100%;
+    border-radius: 35px;
+    border: 5px solid white;
+    box-shadow: -1px 1px 2px #ddd;
+}
+.user {
+    margin: 0 auto;
+}
+.name {
+    text-align: center;
+    margin-top: -20px;
+    font-size: 14px;
+}
+.logout {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #21b97a;
+    padding: 4px 15px;
+    font-size: 14px;
+    color: white;
+    border-radius: 30px;
+    margin: 10px 0;
+}
+.login {
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #21b97a;
+    padding: 6px 15px;
+    font-size: 14px;
+    color: white;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+.edit {
+    color: darkgray;
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    margin: 20px 0;
+}
+.arrow {
+    display: inline-block;
+    transform: translate(0, 2px) rotate(-90deg) scale(0.8);
+}
+
+.grid {
+    margin: 16px;
+}
+.menusItem {
+    height: 88px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.add {
+    margin: 0 16px;
+}
+.add :global(img) {
+    width: 100%;
+}

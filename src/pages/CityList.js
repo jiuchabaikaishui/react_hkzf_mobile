@@ -7,7 +7,10 @@ import useData from '../utils/useData'
 import { useState, useRef } from "react";
 // import requestCurrentCity from "../utils/requestCurrentCity";
 
-import { List, AutoSizer } from "react-virtualized";
+// import { List, AutoSizer } from "react-virtualized";
+import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
+import List from 'react-virtualized/dist/commonjs/List';
+
 import NavHeader from "../components/NavHeader";
 
 import useCurrentCity from "../utils/useCurrentCity";
@@ -37,13 +40,13 @@ export default function CityList() {
     const navigate = useNavigate()
 
     // 获取城市列表数据
-    const { data: cityData } = useData.get('area/city', { 'level': '1' })
+    const { data: cityData } = useData.get('/area/city', {params:{'level': '1'}})
     console.log('cityData: ', cityData);
     // 城市列表数据处理
     const { cityList, cityKeys } = cityDataHandle(cityData)
 
     // 获取热门城市数据
-    const { data: hotData } = useData.get('area/hot')
+    const { data: hotData } = useData.get('/area/hot')
     console.log('hotData: ', hotData);
     if (cityList && cityKeys && hotData && hotData.body && Array.isArray(hotData.body) && hotData.body.length > 0) {
         cityList['hot'] = hotData.body

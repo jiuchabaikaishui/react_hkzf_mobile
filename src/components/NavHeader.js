@@ -2,7 +2,6 @@ import { NavBar } from "antd-mobile";
 import { useNavigate } from "react-router-dom";
 // import "./NavHeader.scss";
 import PropTypes from "prop-types";
-import styles from "./NavHeader.module.css";
 
 export default function NavHeader({onBack, children, className, rightContent}) {
     const navigate = useNavigate()

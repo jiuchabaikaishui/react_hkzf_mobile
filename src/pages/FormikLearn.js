@@ -149,7 +149,7 @@ export default function FormikLearn() {
 
         <br />
         <Formik
-        initialValues={{social: {wechat: '', qq: ''}, frends: ['', '']}}
+        initialValues={{social: {wechat: '', qq: ''}, friends: ['', '']}}
         onSubmit={(values, {setSubmitting}) => {
             console.log('values: ', values)
             setSubmitting(true)
@@ -161,7 +161,7 @@ export default function FormikLearn() {
             }),
             frends: Yup.array().of(Yup.string().required('请输入你的朋友'))
         })}>
-            {({values, handleChange, handleBlur, touched, errors, isSubmitting, setValues, setFieldValue}) => {
+            {({values, handleChange, handleBlur, touched, errors, isSubmitting, setValues, setFieldValue, handleSubmit}) => {
                 console.log('object array values: ', values);
                 console.log('object array handleChange: ', handleChange);
                 console.log('object array handleBlur: ', handleBlur);
@@ -169,7 +169,7 @@ export default function FormikLearn() {
                 console.log('object array errors: ', errors);
                 console.log('object array setValues: ', setValues);
                 console.log('object array setFieldValue: ', setFieldValue);
-                return <form>
+                return <form onSubmit={handleSubmit}>
                     <h4>社交账号</h4>
                     <label>微信：</label>
                     <input name="social.wechat" value={values.social.wechat} onChange={handleChange} onBlur={handleBlur}></input>
@@ -178,10 +178,10 @@ export default function FormikLearn() {
                     <label>QQ：</label>
                     <input name="social.qq" value={values.social.qq} onChange={handleChange} onBlur={handleBlur}></input>
                     <h4>朋友</h4>
-                    {values.frends.map((v, i) => {
+                    {values.friends.map((v, i) => {
                         return (<div key={i}>
-                            <input name={`friends[${i}]`} onChange={handleChange} onBlur={handleBlur}></input>
-                            {i < values.frends.length && <br />}
+                            <input name={`friends[${i}]`} value={values.friends[i]} onChange={handleChange} onBlur={handleBlur}></input>
+                            {i < values.friends.length && <br />}
                         </div>)
                     })}
                     <button type="submit" disabled={isSubmitting}>提交</button>

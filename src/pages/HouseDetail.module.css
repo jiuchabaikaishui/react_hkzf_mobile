@@ -14,7 +14,7 @@
     position: absolute;
     width: 100%;
 }
-:global(.adm-nav-bar-title) {
+.root :global(.adm-nav-bar-title) {
     color: rgb(255, 255, 255);
 }
 
@@ -148,24 +148,6 @@
 .about {
     margin: 16px;
     font-size: 15px;
-}
-.aboutList {
-    display: flex;
-    flex-wrap: wrap;
-}
-.aboutItem {
-    text-align: center;
-    padding-top: 16px;
-    width: 20%;
-    flex-shrink: 0;
-}
-.aboutActive {
-  color: #21b97a;
-}
-.aboutValue {
-    margin: 0;
-    padding: 0;
-    font-size: 23px;
 }
 
 /* 房源概况 */

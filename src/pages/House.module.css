@@ -27,16 +27,3 @@
   flex: 1 1 auto;
   /* background-color: red; */
 }
-
-/* 无数据样式 */
-.noData {
-    margin-top: 100px;
-    text-align: center;
-}
-.img {
-    width: 120px;
-    margin-bottom: 20px;
-}
-.msg {
-    color: #666;
-}

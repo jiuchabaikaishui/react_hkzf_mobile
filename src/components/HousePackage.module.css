@@ -1,0 +1,20 @@
+
+
+.aboutList {
+    display: flex;
+    flex-wrap: wrap;
+}
+.aboutItem {
+    text-align: center;
+    padding-top: 16px;
+    width: 20%;
+    flex-shrink: 0;
+}
+.aboutActive {
+  color: #21b97a;
+}
+.aboutValue {
+    margin: 0;
+    padding: 0;
+    font-size: 23px;
+}

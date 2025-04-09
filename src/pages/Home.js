@@ -47,7 +47,7 @@ const navData = [
       id: 2,
       img: nav2,
       title: '合租',
-      path: '/home/list'
+      path: '/house'
     },
     {
       id: 3,
@@ -138,17 +138,17 @@ function renderHeaderSearch(cityName, onClickLoction, onClickSearch, onClickMap)
 
 export default function Home() {
     // 获取轮播图数据
-    const { data: swiperData } = useData.get('home/swiper')
+    const { data: swiperData } = useData.get('/home/swiper')
     console.log('swiperData: ', swiperData);
 
     const navigate = useNavigate()
 
     // 获取租房小组数据
-    const { data: groupData } = useData.get('home/groups', { area: 'AREA%7C88cff55c-aaa4-e2e0' })
+    const { data: groupData } = useData.get('/home/groups', {params: {area: 'AREA%7C88cff55c-aaa4-e2e0'}})
     console.log('groupData: ', groupData);
     
     // 获取最新资讯数据
-    const { data: newsData } = useData.get('home/news', { area: 'AREA%7C88cff55c-aaa4-e2e0' })
+    const { data: newsData } = useData.get('/home/news', { area: 'AREA%7C88cff55c-aaa4-e2e0' })
     console.log('newsData: ', newsData);
 
     // 百度地图 IP 定位，转换城市数据

@@ -31,6 +31,8 @@ function App() {
   const location = useLocation()
   const navigate = useNavigate()
   console.log('-----', location.pathname);
+
+  console.log('App state: ', location.state);
   
   return (<div className='app'>
     <div className='app-content'>

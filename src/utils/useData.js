@@ -14,7 +14,7 @@ function useNetwork(url, stringParams, type, parser) {
                 let result = null
                 switch (type) {
                     case 'GET': 
-                        result = await instance.get(url, {params: stringParams && JSON.parse(stringParams)})
+                        result = await instance.get(url, stringParams && JSON.parse(stringParams))
                         break;
                     case 'POST': 
                         result = await instance.post(url, stringParams && JSON.parse(stringParams))
